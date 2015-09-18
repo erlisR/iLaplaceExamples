@@ -1,7 +1,7 @@
 ##' @name nLinearReg
 ##'
 ##' @title Posterior distribution (and related quantities) for two nonlinear regression models
-##' @description Posterior distribution, and related quantities, for two non linear regression models each based on a different dataset. For each dataset, two error distributions are considered: normal and Student's \eqn{t}. The functions ending in "lub" refer to the \code{\link[iLaplaceExtra]{Lubricant}} dataset, those with ending "bod2" refer to the \code{\link[iLaplaceExtra]{BOD2}} dataset. The functions with an inner \code{T} refer to the model based on Student's \eqn{t}-error distribution. The functions starting with \code{nlpost} give the negative log-posterior density, those starting with \code{grad} give the gradient of \code{nlpost} and the functions starting with \code{hess} provide the Hessian matrix.
+##' @description Posterior distribution, and related quantities, for two non linear regression models each based on a different dataset. For each dataset, two error distributions are considered: normal and Student's \eqn{t}. The functions ending in "lub" refer to the \code{\link[iLaplaceExamples]{Lubricant}} dataset, those with ending "bod2" refer to the \code{\link[iLaplaceExamples]{BOD2}} dataset. The functions with an inner \code{T} refer to the model based on Student's \eqn{t}-error distribution. The functions starting with \code{nlpost} give the negative log-posterior density, those starting with \code{grad} give the gradient of \code{nlpost} and the functions starting with \code{hess} provide the Hessian matrix.
 ##'
 ##' @aliases nlpostT_lub, grad_lub, gradT_lub, hess_lub, hessT_lub, nlpostT_bod2, grad_bod2, gradT_bod2, hess_bod2, hessT_bod2
 ##'
@@ -21,75 +21,75 @@
 ##' @return double
 ##' @export
 nlpost_lub <- function(beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_nlpost_lub', PACKAGE = 'iLaplaceExtra', beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_nlpost_lub', PACKAGE = 'iLaplaceExamples', beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale)
 }
 ##' @return double
 ##' @rdname nLinearReg
 ##' @export
 nlpostT_lub <- function(beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_nlpostT_lub', PACKAGE = 'iLaplaceExtra', beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_nlpostT_lub', PACKAGE = 'iLaplaceExamples', beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale)
 }
 
 ##' @return 10-variate vector
 ##' @rdname nLinearReg
 ##' @export
 grad_lub <- function(beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_grad_lub', PACKAGE = 'iLaplaceExtra', beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_grad_lub', PACKAGE = 'iLaplaceExamples', beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale)
 }
 
 ##' @return 11-variate vector
 ##' @rdname nLinearReg
 ##' @export
 gradT_lub <- function(beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_gradT_lub', PACKAGE = 'iLaplaceExtra', beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_gradT_lub', PACKAGE = 'iLaplaceExamples', beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale)
 }
 
 ##' @return \eqn{10\times 10}{10 by 10} matrix
 ##' @rdname nLinearReg
 ##' @export
 hess_lub <- function(beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_hess_lub', PACKAGE = 'iLaplaceExtra', beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_hess_lub', PACKAGE = 'iLaplaceExamples', beta, lsig, y, x1, x2, n, muBeta, SigBeta, sigScale)
 }
 ##' @return \eqn{11\times 11}{11 by 11} matrix
 ##' @rdname nLinearReg
 ##' @export
 hessT_lub <- function(beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_hessT_lub', PACKAGE = 'iLaplaceExtra', beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_hessT_lub', PACKAGE = 'iLaplaceExamples', beta, lsig, lnu, y, x1, x2, n, muBeta, SigBeta, sigScale)
 }
 
 ##' @return double
 ##' @rdname nLinearReg
 ##' @export
 nlpost_bod2 <- function(beta, lsig, y, Time, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_nlpost_bod2', PACKAGE = 'iLaplaceExtra', beta, lsig, y, Time, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_nlpost_bod2', PACKAGE = 'iLaplaceExamples', beta, lsig, y, Time, n, muBeta, SigBeta, sigScale)
 }
 
 ##' @return double
 ##' @rdname nLinearReg
 ##' @export
 nlpostT_bod2 <- function(beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_nlpostT_bod2', PACKAGE = 'iLaplaceExtra', beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_nlpostT_bod2', PACKAGE = 'iLaplaceExamples', beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale)
 }
 
 ##' @return 3-variate vector
 ##' @rdname nLinearReg
 ##' @export
 grad_bod2 <- function(beta, lsig, y, Time, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_grad_bod2', PACKAGE = 'iLaplaceExtra', beta, lsig, y, Time, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_grad_bod2', PACKAGE = 'iLaplaceExamples', beta, lsig, y, Time, n, muBeta, SigBeta, sigScale)
 }
 
 ##' @return 4-variate vector
 ##' @rdname nLinearReg
 ##' @export
 gradT_bod2 <- function(beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale) {
-  .Call('iLaplaceExtra_gradT_bod2', PACKAGE = 'iLaplaceExtra', beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale)
+  .Call('iLaplaceExamples_gradT_bod2', PACKAGE = 'iLaplaceExamples', beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale)
 }
 
 ##' @return \eqn{3\times 3}{3 by 3} matrix
 ##' @rdname nLinearReg
 ##' @export
 hess_bod2 <- function(beta, lsig, y, Time, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_hess_bod2', PACKAGE = 'iLaplaceExtra', beta, lsig, y, Time, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_hess_bod2', PACKAGE = 'iLaplaceExamples', beta, lsig, y, Time, n, muBeta, SigBeta, sigScale)
 }
 ##' @examples
 ##' \dontrun{
@@ -136,7 +136,7 @@ hess_bod2 <- function(beta, lsig, y, Time, n, muBeta, SigBeta, sigScale) {
 ##'                     mcmc=1e+5, thin=2, tune=0.9, V=solve(opt.post$hessian),
 ##'                     df=dfprop, theta.init=init, verbose=10000)
 ##' }
-##' @seealso \code{\link[iLaplaceExtra]{MHmcmc}}
+##' @seealso \code{\link[iLaplaceExamples]{MHmcmc}}
 ##'
 ##'  @details The prior for \code{beta} is the multivariate Studnet's \eqn{t}{t} with the appropriate dimension, with location \code{muBeta}, scale matrix \code{SigBeta} and degrees of freedom equal to 5. The prior for the \code{scale} is the HalfCauchy distribution with scale \code{sigScale} and the prior for the degress of freedom is the Jeffreys' rule prior of Fonseca et al. (2008).
 
@@ -154,6 +154,6 @@ hess_bod2 <- function(beta, lsig, y, Time, n, muBeta, SigBeta, sigScale) {
 ##' @rdname nLinearReg
 ##' @export
 hessT_bod2 <- function(beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale) {
-    .Call('iLaplaceExtra_hessT_bod2', PACKAGE = 'iLaplaceExtra', beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale)
+    .Call('iLaplaceExamples_hessT_bod2', PACKAGE = 'iLaplaceExamples', beta, lsig, lnu, y, Time, n, muBeta, SigBeta, sigScale)
 }
 

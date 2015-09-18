@@ -98,7 +98,7 @@ double
 \eqn{4\times 4}{4 by 4} matrix
 }
 \description{
-Posterior distribution, and related quantities, for two non linear regression models each based on a different dataset. For each dataset, two error distributions are considered: normal and Student's \eqn{t}. The functions ending in "lub" refer to the \code{\link[iLaplaceExtra]{Lubricant}} dataset, those with ending "bod2" refer to the \code{\link[iLaplaceExtra]{BOD2}} dataset. The functions with an inner \code{T} refer to the model based on Student's \eqn{t}-error distribution. The functions starting with \code{nlpost} give the negative log-posterior density, those starting with \code{grad} give the gradient of \code{nlpost} and the functions starting with \code{hess} provide the Hessian matrix.
+Posterior distribution, and related quantities, for two non linear regression models each based on a different dataset. For each dataset, two error distributions are considered: normal and Student's \eqn{t}. The functions ending in "lub" refer to the \code{\link[iLaplaceExamples]{Lubricant}} dataset, those with ending "bod2" refer to the \code{\link[iLaplaceExamples]{BOD2}} dataset. The functions with an inner \code{T} refer to the model based on Student's \eqn{t}-error distribution. The functions starting with \code{nlpost} give the negative log-posterior density, those starting with \code{grad} give the gradient of \code{nlpost} and the functions starting with \code{hess} provide the Hessian matrix.
 }
 \details{
 The prior for \code{beta} is the multivariate Studnet's \eqn{t}{t} with the appropriate dimension, with location \code{muBeta}, scale matrix \code{SigBeta} and degrees of freedom equal to 5. The prior for the \code{scale} is the HalfCauchy distribution with scale \code{sigScale} and the prior for the degress of freedom is the Jeffreys' rule prior of Fonseca et al. (2008).
@@ -159,6 +159,6 @@ Improved Laplace approximation for marignal likelihoods.
 \url{http://arxiv.org/abs/1502.06440}
 }
 \seealso{
-\code{\link[iLaplaceExtra]{MHmcmc}}
+\code{\link[iLaplaceExamples]{MHmcmc}}
 }
 

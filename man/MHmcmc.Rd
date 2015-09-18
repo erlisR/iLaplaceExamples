@@ -116,6 +116,6 @@ Robert C. P. & Casella G. (2004).
  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 }
 \seealso{
-\code{\link[iLaplaceExtra]{Lubricant}}, \code{\link[iLaplaceExtra]{nlpost_lub}}
+\code{\link[iLaplaceExamples]{Lubricant}}, \code{\link[iLaplaceExamples]{nlpost_lub}}
 }
 

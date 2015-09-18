@@ -85,6 +85,6 @@ Robert C. P. & Casella G. (2004).
  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 }
 \seealso{
-\code{\link[iLaplace]{iLap_an}}, \code{\link[iLaplace]{MHmcmc}}, \code{\link[iLaplace]{isML}}
+\code{\link[iLaplaceExamples]{MHmcmc}}, \code{\link[iLaplaceExamples]{isML}}
 }
 

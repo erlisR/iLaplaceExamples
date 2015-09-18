@@ -5,7 +5,6 @@
 \alias{fixPar,}
 \alias{grad_salam}
 \alias{hess_salam}
-\alias{iLap.nlik_salam}
 \alias{logitRegCRE}
 \alias{nlogH_salam}
 \alias{nlogH_salam(randPar,}
@@ -16,9 +15,6 @@ nlogH_salam(randPar, fixPar, data)
 grad_salam(randPar, fixPar, data)
 
 hess_salam(randPar, fixPar, data)
-
-iLap.nlik_salam(fixPar, data, control = list(sp.points = 100, delta = 20,
-  nc.cores = detectCores() - 1))
 }
 \arguments{
 \item{randPar}{The vector of random effects. The first 20 elements are the random effects for femals and the second block of 20 elements are the random effects for males}
@@ -26,8 +22,6 @@ iLap.nlik_salam(fixPar, data, control = list(sp.points = 100, delta = 20,
 \item{fixPar}{is the vector of fixed parameters made by the 4 regression coefficients and the 2 variance components}
 
 \item{data}{The data. It must be a named list with appropriate components. See Examples for more details.}
-
-\item{control}{A named list of parameters. See \code{\link[iLaplace]{iLap_an}} for more details.}
 }
 \value{
 double
@@ -35,15 +29,13 @@ double
 a 40-dimensional vector
 
 a \eqn{40\times 40}{40 by 40} positive definite matrix
-
-a double, the minus logarithm of the integral
 }
 \description{
-Log-likelihood functions and related quantities for a logistic regression model with crossed random effects based on the \code{\link[iLaplaceExtra]{Salamander}} data. In particular, the function \code{nlogH_salam} gives the joint likelihood for the fixed and random parameters, given the data, \code{grad_salam} gives the gradient of \code{nlogH_salam} with respect to the random effects and \code{hess_salam} gives its Hessian matrix. Finally \code{iLap.nlik_salam} computes the approximate marginal likelihood for the fixed parameters given the data.
+Log-likelihood functions and related quantities for a logistic regression model with crossed random effects based on the \code{\link[iLaplaceExamples]{Salamander}} data. In particular, the function \code{nlogH_salam} gives the joint likelihood for the fixed and random parameters, given the data, \code{grad_salam} gives the gradient of \code{nlogH_salam} with respect to the random effects and \code{hess_salam} gives its Hessian matrix.
 }
 \details{
 For each experiment, the model can be written as
-\deqn{Y_{ij} \sim Bernoulli(p_{ij})}{Y_ij \sim Bernoulli(p_ij),} \deqn{logit(p_{ij}) = x_{ij}^T\beta + u_i^f + u_j^m}{logit(p_i) = x_ij^T\beta + u_i^f + u_j^m} \deqn{u_i^f \sim N(0,\sigma_f^2)}{u_i \sim N(0,\sigma_m^2),} \eqn{i,j=1,\ldots,20}{i,j=1,...,20}. There are 20 random effects for female salamnders and 20 random effects for males. Both males' and females' random effects are independent Gaussian random variables but with different variances. There are 4 regression parameters \eqn{\beta}{\beta}, all corresponding to a type of cross. Hence, overall there are 6 fixed parameters of which 4 are regression parameter and 2 are variance parameters, reparametrised in logarithmic scale. If the experiments are analysed separately the marginal likelihood for the fixed parameters entails the integration over a 40-dimensional vector of random effects. But if the experiments are analysed jointly, there are \eqn{3\times 40=120}{3*40=120} random effects to be integrated out. The function \code{iLap.nlik_salam} integrates out the 40 random effects by the improved Laplace method of Ruli et al. (2015) and gives the negative of the logarithm of the integral.
+\deqn{Y_{ij} \sim Bernoulli(p_{ij})}{Y_ij \sim Bernoulli(p_ij),} \deqn{logit(p_{ij}) = x_{ij}^T\beta + u_i^f + u_j^m}{logit(p_i) = x_ij^T\beta + u_i^f + u_j^m} \deqn{u_i^f \sim N(0,\sigma_f^2)}{u_i \sim N(0,\sigma_m^2),} \eqn{i,j=1,\ldots,20}{i,j=1,...,20}. There are 20 random effects for female salamnders and 20 random effects for males. Both males' and females' random effects are independent Gaussian random variables but with different variances. There are 4 regression parameters \eqn{\beta}{\beta}, all corresponding to a type of cross. Hence, overall there are 6 fixed parameters of which 4 are regression parameter and 2 are variance parameters, reparametrised in logarithmic scale. If the experiments are analysed separately the marginal likelihood for the fixed parameters entails the integration over a 40-dimensional vector of random effects. But if the experiments are analysed jointly, there are \eqn{3\times 40=120}{3*40=120} random effects to be integrated out.
 }
 \examples{
 \dontrun{

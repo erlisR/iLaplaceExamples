@@ -105,29 +105,29 @@
 ##' Robert C. P. & Casella G. (2004).
 ##'  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 ##'
-##' @seealso \code{\link[iLaplaceExtra]{Lubricant}}, \code{\link[iLaplaceExtra]{nlpost_lub}}
+##' @seealso \code{\link[iLaplaceExamples]{Lubricant}}, \code{\link[iLaplaceExamples]{nlpost_lub}}
 ##'
 ##' @export
 MHmcmc <- function(logfun, burnin, mcmc, thin, tune, V, df, theta.init, verbose){
   my.env <- environment(fun = logfun)
   tune <- vector.tune(tune, length(theta.init))
 
-  if (nrow(V) != ncol(V) || nrow(V) != length(theta.init)){
+  if (nrow(V) != ncol(V) || nrow(V) != length(theta.init)) {
     cat("V not of appropriate dimension.\n")
-    stop("Check V and theta.init and call MCMCmetrop1R() again. \n",
-         call.=FALSE)
+    stop("Check V and theta.init and call MHmcmc() again. \n",
+         call. = FALSE)
   }
   CC <- NULL
-  try(CC <- chol(V), silent=TRUE)
-  if (is.null(CC)){
+  try(CC <- chol(V), silent = TRUE)
+  if (is.null(CC)) {
     cat("V not positive definite.\n")
-    stop("Check V and call MCMCmetrop1R() again. \n",
-         call.=FALSE)
+    stop("Check V and call MHmcmc() again. \n",
+         call. = FALSE)
   }
   V <- tune %*% V %*% tune
 
-  sample <- .Call('iLaplaceExtra_MCMCmetrop_cpp',
-                  PACKAGE = 'iLaplaceExtra',
+  sample <- .Call('iLaplaceExamples_MCMCmetrop_cpp',
+                  PACKAGE = 'iLaplaceExamples',
                   logfun,
                   theta.init,
                   V,
@@ -136,6 +136,6 @@ MHmcmc <- function(logfun, burnin, mcmc, thin, tune, V, df, theta.init, verbose)
                   df,
                   verbose,
                   my.env)
-  sample <- mcmc(data=t(sample), start=burnin+1, end=mcmc, thin=thin)
+  sample <- mcmc(data = t(sample), start = burnin + 1, end = mcmc, thin = thin)
   return(sample)
 }

@@ -67,7 +67,7 @@
 ##' Robert C. P. & Casella G. (2004).
 ##'  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 ##'
-##' @seealso \code{\link[iLaplace]{iLap_an}}, \code{\link[iLaplace]{MHmcmc}}, \code{\link[iLaplace]{isML}}
+##' @seealso \code{\link[iLaplaceExamples]{MHmcmc}}, \code{\link[iLaplaceExamples]{isML}}
 ##'
 ##' @rdname ChibML
 ##' @export
@@ -77,22 +77,22 @@ ChibML <- function(logfun, theta.star, tune, V, mcmcsamp, df, verbose){
 
   tune <- vector.tune(tune, length(theta.star))
 
-  if (nrow(V) != ncol(V) || nrow(V) != length(theta.star)){
+  if (nrow(V) != ncol(V) || nrow(V) != length(theta.star)) {
     cat("V not of appropriate dimension.\n")
     stop("Check V and theta.star and call ChibML() again. \n",
-         call.=FALSE)
+         call. = FALSE)
   }
   CC <- NULL
-  try(CC <- chol(V), silent=TRUE)
-  if (is.null(CC)){
+  try(CC <- chol(V), silent = TRUE)
+  if (is.null(CC)) {
     cat("V not positive definite.\n")
     stop("Check V and call ChibML() again. \n",
-         call.=FALSE)
+         call. = FALSE)
   }
   V <- tune %*% V %*% tune
 
-  ans = .Call('iLaplaceExtra_mlChib_cpp',
-              PACKAGE = 'iLaplaceExtra',
+  ans = .Call('iLaplaceExamples_mlChib_cpp',
+              PACKAGE = 'iLaplaceExamples',
               logfun,
               theta.star,
               V,
@@ -180,8 +180,8 @@ ChibML <- function(logfun, theta.star, tune, V, mcmcsamp, df, verbose){
 ##' Robert C. P. & Casella G. (2004).
 ##'  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 ##'
-##' @seealso \code{\link[iLaplace]{iLap_an}}, \code{\link[iLaplace]{MHmcmc}},
-##' \code{\link[iLaplace]{ChibML}}
+##' @seealso \code{\link[iLaplaceExamples]{MHmcmc}},
+##' \code{\link[iLaplaceExamples]{ChibML}}
 ##'
 ##' @rdname isML
 ##' @export
@@ -189,22 +189,22 @@ isML <- function(logfun, nsim, theta.hat, tune, V, df, verbose){
   my.env <- environment(fun = logfun)
 
   tune <- vector.tune(tune, length(theta.hat))
-  if (nrow(V) != ncol(V) || nrow(V) != length(theta.hat)){
+  if (nrow(V) != ncol(V) || nrow(V) != length(theta.hat)) {
     cat("V not of appropriate dimension.\n")
     stop("Check V and theta.star and call ChibML() again. \n",
-         call.=FALSE)
+         call. = FALSE)
   }
   CC <- NULL
-  try(CC <- chol(V), silent=TRUE)
-  if (is.null(CC)){
+  try(CC <- chol(V), silent = TRUE)
+  if (is.null(CC)) { 
     cat("V not positive definite.\n")
     stop("Check V and call ChibML() again. \n",
-         call.=FALSE)
+         call. = FALSE)
   }
   V <- tune %*% V %*% tune
   p <- ncol(V)
-  ans = .Call('iLaplaceExtra_mlIS_cpp',
-              PACKAGE = 'iLaplaceExtra',
+  ans = .Call('iLaplaceExamples_mlIS_cpp',
+              PACKAGE = 'iLaplaceExamples',
               logfun,
               theta.hat,
               V,

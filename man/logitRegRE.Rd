@@ -30,7 +30,7 @@ an n+2 dimensional vector
 an \eqn{(n+2)\times(n+2)}{(n+2)by(n+2)} positive definite matrix
 }
 \description{
-The following functions give the posterior distribution and related quantities for a logistic regression model with random effects. Only the case with one observation for each group is considered, e.g. there is no replication within groups and the fixed effect is an intercept. In particular, \code{nlpost_rebin} gives the negative log-posterior for the fixed (\code{theta}) and random effects (\code{u}), \code{grU_rebin} give the gradient of \code{nlpost_rebin} with respect to \code{u} and \code{hessU_rebin} gives the Hessian matrix.
+The following functions give the posterior distribution and related quantities for a logistic regression model with random effects. Only the case with one observation for each group is considered, e.g. there is no replication within groups and the fixed effect is an intercept. In particular, \code{nlpost_rebin} gives the negative log-posterior for the fixed parameter (\code{theta}) and random effects (\code{u}), \code{grU_rebin} give the gradient of \code{nlpost_rebin} with respect to \code{u} and \code{hessU_rebin} gives the Hessian matrix.
 }
 \details{
 The model can be written as \deqn{Y_i \sim Bernoulli(p_i)}{Y_i \sim Bernoulli(p_i),} \deqn{logit(p_i) = \beta + u_i}{logit(p_i) = \beta + u_i,} \deqn{u_i \sim N(0,\tau^-1)}{u_i \sim N(0,\tau^-1),} \deqn{\beta \sim N(0,1)}{\beta \sim N(0,1),} \deqn{\tau \sim Gamma(1,1)}{\tau \sim Gamma(1,1).} Note the \eqn{\tau}{\tau} is implemented in log.

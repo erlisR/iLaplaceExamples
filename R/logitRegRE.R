@@ -1,6 +1,6 @@
 ##' @name logitRegRE
 ##' @title Logistic regression with random effects
-##' @description The following functions give the posterior distribution and related quantities for a logistic regression model with random effects. Only the case with one observation for each group is considered, e.g. there is no replication within groups and the fixed effect is an intercept. In particular, \code{nlpost_rebin} gives the negative log-posterior for the fixed (\code{theta}) and random effects (\code{u}), \code{grU_rebin} give the gradient of \code{nlpost_rebin} with respect to \code{u} and \code{hessU_rebin} gives the Hessian matrix.
+##' @description The following functions give the posterior distribution and related quantities for a logistic regression model with random effects. Only the case with one observation for each group is considered, e.g. there is no replication within groups and the fixed effect is an intercept. In particular, \code{nlpost_rebin} gives the negative log-posterior for the fixed parameter (\code{theta}) and random effects (\code{u}), \code{grU_rebin} give the gradient of \code{nlpost_rebin} with respect to \code{u} and \code{hessU_rebin} gives the Hessian matrix.
 ##'
 ##' @aliases grU_rebin
 ##' @aliases hessU_rebin
@@ -13,13 +13,13 @@
 ##' @return double
 ##' @export
 nlpost_rebin <- function(u, theta, y, n) {
-  .Call('iLaplaceExtra_nlpost_rebin', PACKAGE = 'iLaplaceExtra', u, theta, y, n)
+  .Call('iLaplaceExamples_nlpost_rebin', PACKAGE = 'iLaplaceExamples', u, theta, y, n)
 }
 ##' @return an n+2 dimensional vector
 ##' @rdname logitRegRE
 ##' @export
 grU_rebin <- function(u, theta, y, n) {
-  .Call('iLaplaceExtra_grU_rebin', PACKAGE = 'iLaplaceExtra', u, theta, y, n)
+  .Call('iLaplaceExamples_grU_rebin', PACKAGE = 'iLaplaceExamples', u, theta, y, n)
 }
 
 # grAll_rebin <- function(u, theta, y, n) {
@@ -75,7 +75,7 @@ grU_rebin <- function(u, theta, y, n) {
 ##' @rdname logitRegRE
 ##' @export
 hessU_rebin <- function(u, theta, y, n) {
-  .Call('iLaplaceExtra_hessU_rebin', PACKAGE = 'iLaplaceExtra', u, theta, y, n)
+  .Call('iLaplaceExamples_hessU_rebin', PACKAGE = 'iLaplaceExamples', u, theta, y, n)
 }
 
 # hessAll_rebin <- function(u, theta, y, n) {

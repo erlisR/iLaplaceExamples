@@ -1,25 +1,25 @@
 nlDen_mvt <- function(x, m, df) {
-    .Call('iLaplaceExtra_nlDen_mvt', PACKAGE = 'iLaplaceExtra', x, m, df)
+    .Call('iLaplaceExamples_nlDen_mvt', PACKAGE = 'iLaplaceExamples', x, m, df)
 }
 
 nlDen_mvskt <- function(x, a, c, m, df) {
-    .Call('iLaplaceExtra_nlDen_mvskt', PACKAGE = 'iLaplaceExtra', x, a, c, m, df)
+    .Call('iLaplaceExamples_nlDen_mvskt', PACKAGE = 'iLaplaceExamples', x, a, c, m, df)
 }
 
 grad_mvt <- function(x, m, df) {
-    .Call('iLaplaceExtra_grad_mvt', PACKAGE = 'iLaplaceExtra', x, m, df)
+    .Call('iLaplaceExamples_grad_mvt', PACKAGE = 'iLaplaceExamples', x, m, df)
 }
 
 grad_mvskt <- function(x, a, c, m, df) {
-    .Call('iLaplaceExtra_grad_mvskt', PACKAGE = 'iLaplaceExtra', x, a, c, m, df)
+    .Call('iLaplaceExamples_grad_mvskt', PACKAGE = 'iLaplaceExamples', x, a, c, m, df)
 }
 
 hess_mvt <- function(x, m, df) {
-    .Call('iLaplaceExtra_hess_mvt', PACKAGE = 'iLaplaceExtra', x, m, df)
+    .Call('iLaplaceExamples_hess_mvt', PACKAGE = 'iLaplaceExamples', x, m, df)
 }
 
 hess_mvskt <- function(x, a, c, m, df) {
-    .Call('iLaplaceExtra_hess_mvskt', PACKAGE = 'iLaplaceExtra', x, a, c, m, df)
+    .Call('iLaplaceExamples_hess_mvskt', PACKAGE = 'iLaplaceExamples', x, a, c, m, df)
 }
 
 ##' @name skewStudent
@@ -51,7 +51,7 @@ hess_mvskt <- function(x, a, c, m, df) {
 ##' @export
 iLap_mvt = function(m, df) {
   # full optimization and hessian
-  fullOpt = nlminb(rep(0,m), objective = nlDen_mvt, gradient=grad_mvt, m=m, df=df)
+  fullOpt = nlminb(rep(0,m), objective = nlDen_mvt, gradient = grad_mvt, m = m, df = df)
   fullOpt$hessian = hess_mvt(fullOpt$par, m, df)
   fullOpt$ldet = as.double(determinant(fullOpt$hessian)$mod)
 
