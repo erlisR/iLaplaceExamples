@@ -1,0 +1,16 @@
+Package: iLaplaceExamples
+Type: Package
+Title: Extra Utilities and Examples for iLaplace
+Version: 0.0.0.9000
+Date: 2015-09-01
+Authors@R: c(
+       person("Erlis", "Ruli", email = "erlisr@yahoo.it", role = "cre"),
+       person("Nicola", "Sartori", role = "aut"),
+       person("Laura", "Ventura", role = "aut"))
+Description: Extra utilities and examples on computing marginal likelihood with the improved Laplace approximation of Ruli et al. (2015) and with alternative methods as Markov chain Monte Carlo and importance sampling.
+Depends: R(>= 3.0.0)
+Imports: coda(>= 0.16.1)
+LinkingTo: Rcpp, RcppArmadillo
+Suggests: lattice, rjags, VGAM
+License: GPL(>=2)
+LazyData: true
