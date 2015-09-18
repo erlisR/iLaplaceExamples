@@ -57,6 +57,6 @@ plot(mcmc.gomp)
 }
 }
 \seealso{
-\code{\link[iLaplaceExtra]{MHmcmc}}
+\code{\link[iLaplaceExamples]{MHmcmc}}
 }
 
