@@ -1,29 +1,29 @@
 dmvt <- function(x, mu, S, p, df, lg) {
-  .Call('iLaplace_dmvt', PACKAGE = 'iLaplaceExtra', x, mu, S, p, df, lg)
+  .Call('iLaplaceExamples_dmvt', PACKAGE = 'iLaplaceExamples', x, mu, S, p, df, lg)
 }
 
 dhalfCauchy <- function(x, scale, lg = FALSE) {
-  .Call('iLaplace_dhalfCauchy', PACKAGE = 'iLaplaceExtra', x, scale, lg)
+  .Call('iLaplaceExamples_dhalfCauchy', PACKAGE = 'iLaplaceExamples', x, scale, lg)
 }
 
 rmvnorm <- function(mu, S, p) {
-  .Call('iLaplace_rmvnorm', PACKAGE = 'iLaplaceExtra', mu, S, p)
+  .Call('iLaplaceExamples_rmvnorm', PACKAGE = 'iLaplaceExamples', mu, S, p)
 }
 
 rmvt <- function(mu, S, p, df) {
-  .Call('iLaplace_rmvt', PACKAGE = 'iLaplaceExtra', mu, S, p, df)
+  .Call('iLaplaceExamples_rmvt', PACKAGE = 'iLaplaceExamples', mu, S, p, df)
 }
 
 prJeff <- function(nu, lg = FALSE) {
-  .Call('iLaplace_prJeff', PACKAGE = 'iLaplaceExtra', nu, lg)
+  .Call('iLaplaceExamples_prJeff', PACKAGE = 'iLaplaceExamples', nu, lg)
 }
 
 grldmvt <- function(x, mu, S, p, df) {
-  .Call('iLaplace_grldmvt', PACKAGE = 'iLaplaceExtra', x, mu, S, p, df)
+  .Call('iLaplaceExamples_grldmvt', PACKAGE = 'iLaplaceExamples', x, mu, S, p, df)
 }
 
 hessldmvt <- function(x, mu, S, p, df) {
-  .Call('iLaplace_hessldmvt', PACKAGE = 'iLaplaceExtra', x, mu, S, p, df)
+  .Call('iLaplaceExamples_hessldmvt', PACKAGE = 'iLaplaceExamples', x, mu, S, p, df)
 }
 
 ## setup diagonal tuning matrix for vector parameters
