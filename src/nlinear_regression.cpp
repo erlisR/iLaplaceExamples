@@ -7,7 +7,7 @@ using namespace Rcpp;
 double dmvt(arma::vec x, arma::vec mu, arma::mat S, int p, double df, bool lg)
 {
   double lans = 0.0, ldet = 0.0, sign = 1.0;
-  lans += Rf_lgammafn(0.5*(df+p)) - Rf_lgammafn(0.5*df) - 0.5*p*(log(df) + 
+  lans += Rf_lgammafn(0.5*(df+p)) - Rf_lgammafn(0.5*df) - 0.5*p*(log(df) +
   log(arma::datum::pi));
   arma::log_det(ldet, sign, S);
   lans += -(0.5*arma::as_scalar(ldet) + 0.5*(df+p)*log(1.0 + arma::as_scalar(trans(x-mu)
@@ -21,14 +21,14 @@ double dmvt(arma::vec x, arma::vec mu, arma::mat S, int p, double df, bool lg)
 
 
 // [[Rcpp::export]]
-double 
-dhalfCauchy(double x, double scale, bool lg = false) 
+double
+dhalfCauchy(double x, double scale, bool lg = false)
 {
   if (scale <= 0) {
     throw std::range_error("The scale parameter must be positive in dhalfCauchy.\n");
     }
   double dens = log(2 * scale) - log(M_PI*(x*x + scale*scale));
-    if (lg == false) 
+    if (lg == false)
         dens = exp(dens);
     return dens;
 }
@@ -76,14 +76,14 @@ double prJeff(double nu, bool lg = false)
 
 double fbX(arma::vec beta, double x1i, double x2i)
 {
-  double eta = 100*beta(0)/(10*beta(1) + x1i) + beta(2)*x2i 
-        	+ beta(3)*x2i*x2i + beta(4)*pow(x2i,3.0) 
-        	+ (beta(5) + beta(6)*x2i*x2i)*x2i*exp(-x1i/(beta(7) 
+  double eta = 100*beta(0)/(10*beta(1) + x1i) + beta(2)*x2i
+        	+ beta(3)*x2i*x2i + beta(4)*pow(x2i,3.0)
+        	+ (beta(5) + beta(6)*x2i*x2i)*x2i*exp(-x1i/(beta(7)
         	+ beta(8)*x2i*x2i));
     return eta;
 }
 
-arma::vec 
+arma::vec
 fbXprime(arma::vec beta, double x1i, double x2i)
 {
   arma::vec ans(9, arma::fill::zeros);
@@ -101,16 +101,16 @@ fbXprime(arma::vec beta, double x1i, double x2i)
 }
 
 
-arma::mat 
+arma::mat
 fbXsec(arma::vec beta, double x1i, double x2i)
 {
   arma::mat ans(9,9, arma::fill::zeros);
 //  ans(0,0) = 0.0;
-//  ans(0,arma::span(2,8)) = ans(arma::span(2,8),0) = 0.0; 
+//  ans(0,arma::span(2,8)) = ans(arma::span(2,8),0) = 0.0;
   ans(0,1) = ans(1,0) = -1000/pow(x1i + 10*beta(1),2.0);
   ans(1,1) = 20000*beta(0)/pow(x1i + 10*beta(1),3.0);
-//  ans(1,arma::span(2,8)) = ans(arma::span(2,8),1) = arma::zeros<arma::vec>(7); 
-//  ans(2,arma::span(0,8)) = ans(arma::span(0,8),2) = arma::zeros<arma::vec>(7); 
+//  ans(1,arma::span(2,8)) = ans(arma::span(2,8),1) = arma::zeros<arma::vec>(7);
+//  ans(2,arma::span(0,8)) = ans(arma::span(0,8),2) = arma::zeros<arma::vec>(7);
 //  ans(3,arma::span(0,8)) = ans(arma::span(0,8),3) = arma::zeros<arma::vec>(7);
 //  ans(4,arma::span(0,8)) = ans(arma::span(0,8),4) = arma::zeros<arma::vec>(7);
 //  ans(5,arma::span(0,6)) = ans(arma::span(0,6)),5) = arma::zeros<arma::vec>(7);
@@ -203,7 +203,7 @@ double nlpostT_lub(arma::vec beta,
 }
 
 //[[Rcpp::export]]
-arma::vec 
+arma::vec
 grad_lub(arma::vec beta,
         double lsig,
  			  arma::vec y,
@@ -212,7 +212,7 @@ grad_lub(arma::vec beta,
  			  int n,
  			  arma::vec muBeta,
  			  arma::mat SigBeta,
- 			  double sigScale) 
+ 			  double sigScale)
 {
   arma::vec ans(10, arma::fill::zeros),
   etaprime(9, arma::fill::zeros);
@@ -232,7 +232,7 @@ grad_lub(arma::vec beta,
 }
 
 //[[Rcpp::export]]
-arma::vec 
+arma::vec
 gradT_lub(arma::vec beta,
      	double lsig,
       double lnu,
@@ -242,7 +242,7 @@ gradT_lub(arma::vec beta,
  			int n,
  			arma::vec muBeta,
  			arma::mat SigBeta,
- 			double sigScale) 
+ 			double sigScale)
 {
   arma::vec ans(11, arma::fill::zeros),
   etaprime(9, arma::fill::zeros);
@@ -252,7 +252,7 @@ gradT_lub(arma::vec beta,
     zi = (y(i)-eta)/exp(lsig);
     etaprime = fbXprime(beta, x1(i), x2(i));
     Df = exp(-lsig)*(1+exp(lnu))*zi/(exp(lnu) + zi*zi);
-    
+
     ans(arma::span(0,8)) += Df*etaprime;
     ans(9) += -1.0 + (1+exp(lnu))*zi*zi/(exp(lnu) + zi*zi);
     ans(10) += 0.5*exp(lnu) - 0.5*exp(lnu)*(1+exp(lnu))/(exp(lnu) + zi*zi)
@@ -264,8 +264,8 @@ gradT_lub(arma::vec beta,
   ans(arma::span(0,8)) += grb;
   ans(9) += 1 - 2*exp(2*lsig)/(exp(2*lsig) + sigScale*sigScale);
   ans(10) += 1 + 0.5*
-          (1 - exp(lnu)/(3+exp(lnu)) + 
-          (2*exp(-lnu)*(3+9*exp(lnu)+2*exp(2*lnu))/pow(1+exp(lnu), 3.0) 
+          (1 - exp(lnu)/(3+exp(lnu)) +
+          (2*exp(-lnu)*(3+9*exp(lnu)+2*exp(2*lnu))/pow(1+exp(lnu), 3.0)
           + 0.5*exp(lnu)*Rf_tetragamma(0.5*exp(lnu))
           - 0.5*exp(lnu)*Rf_tetragamma(0.5*(1+exp(lnu))))
           /(-2.0*(3.0+exp(lnu))*exp(-lnu)/(pow(1+exp(lnu), 2.0)) +
@@ -276,7 +276,7 @@ gradT_lub(arma::vec beta,
 }
 
 //[[Rcpp::export]]
-arma::mat 
+arma::mat
 hess_lub(arma::vec beta,
         double lsig,
    		  arma::vec y,
@@ -285,7 +285,7 @@ hess_lub(arma::vec beta,
  			  int n,
  			  arma::vec muBeta,
  			  arma::mat SigBeta,
- 			  double sigScale) 
+ 			  double sigScale)
 {
   double zi=0.0, df = 2;
   arma::mat hh(10,10, arma::fill::zeros),
@@ -296,7 +296,7 @@ hess_lub(arma::vec beta,
     etap = fbXprime(beta, x1(i), x2(i));
     etas = fbXsec(beta, x1(i), x2(i));
     hh(arma::span(0,8),arma::span(0,8)) += -exp(-2*lsig)*
-                                          (etap*trans(etap) - 
+                                          (etap*trans(etap) -
                                           exp(lsig)*zi*etas);
     hh(arma::span(0,8),9) +=  -2*exp(-lsig)*zi*etap;
     hh(9,9) += -2*zi*zi;
@@ -308,7 +308,7 @@ hess_lub(arma::vec beta,
 }
 
 //[[Rcpp::export]]
-arma::mat 
+arma::mat
 hessT_lub(arma::vec beta,
         double lsig,
         double lnu,
@@ -318,7 +318,7 @@ hessT_lub(arma::vec beta,
  			  int n,
  			  arma::vec muBeta,
  			  arma::mat SigBeta,
- 			  double sigScale) 
+ 			  double sigScale)
 {
   double zi=0.0, df = 2;
   arma::mat hh(11,11, arma::fill::zeros),
@@ -328,7 +328,7 @@ hessT_lub(arma::vec beta,
     zi = (y(i) - fbX(beta, x1(i), x2(i)))/exp(lsig);
     etap = fbXprime(beta, x1(i), x2(i));
     etas = fbXsec(beta, x1(i), x2(i));
-    
+
 //    for(int g=0; g<9; g++){
 //      for(int h = 0; h<9; h++){
 //        hh(g,h) += (1+exp(lnu))*(-exp(-2*lsig)*etap(g)*etap(h)/(exp(lnu)+zi*zi)+
@@ -339,24 +339,24 @@ hessT_lub(arma::vec beta,
     hh(arma::span(0,8),arma::span(0,8)) += -(1+exp(lnu))*(exp(-2*lsig)*etap*trans(etap)/(exp(lnu)+zi*zi)-
                         2*exp(-2*lsig)*zi*zi*etap*trans(etap)/pow(exp(lnu)+zi*zi, 2.0)-exp(-lsig)*zi*etas/
                         (exp(lnu)+zi*zi));
-                        
+
     hh(arma::span(0,8),9) +=  -2*exp(-lsig)*(1+exp(lnu))*zi*etap/(exp(lnu)+zi*zi)+
                             2*exp(-lsig)*(1+exp(lnu))*pow(zi,3.0)*etap/pow(exp(lnu)+
                             zi*zi,2.0);
-                            
+
     hh(9,9) += -2*(1+exp(lnu))*zi*zi/(exp(lnu)+zi*zi) + 2*(1+exp(lnu))*pow(zi,4.0)/
               pow(exp(lnu)+zi*zi,2);
-              
+
     hh(arma::span(0,8),10) +=  -exp(-lsig+lnu)*(1+exp(lnu))*zi*etap/pow(exp(lnu)+zi*zi,2.0)+
                             exp(-lsig+lnu)*zi*etap/(exp(lnu)+zi*zi);
-                            
+
     hh(9,10) += -exp(lnu)*(1+exp(lnu))*zi*zi/pow(exp(lnu)+zi*zi,2.0)+
                             exp(lnu)*zi*zi/(exp(lnu)+zi*zi);
-                            
+
     hh(10,10) += exp(lnu) + 0.5*exp(2*lnu)*(1+exp(lnu))/pow(exp(lnu)+zi*zi,2.0) -
                exp(2*lnu)/(exp(lnu)+zi*zi) - 0.5*exp(lnu)*(1+exp(lnu))/(exp(lnu)+zi*zi) +
                0.5*exp(lnu)*lnu - 0.5*exp(lnu)*log(exp(lnu)+zi*zi) - 0.5*exp(lnu)
-               *Rf_digamma(0.5*exp(lnu)) + 0.5*exp(lnu)*Rf_digamma(0.5*(exp(lnu)+1)) 
+               *Rf_digamma(0.5*exp(lnu)) + 0.5*exp(lnu)*Rf_digamma(0.5*(exp(lnu)+1))
                -0.25*exp(2*lnu)*Rf_trigamma(0.5*exp(lnu)) + 0.25*exp(2*lnu)*
                Rf_trigamma(0.5*(exp(lnu)+1));
     }
@@ -369,14 +369,14 @@ hessT_lub(arma::vec beta,
                -2/pow(1+exp(lnu),2.0) + 4*(3+exp(lnu))/pow(1+exp(lnu),3.0) + 2*exp(-lnu)
                *(3+exp(lnu))/pow(1+exp(lnu),2.0) + 0.5*exp(lnu)*Rf_tetragamma(0.5*exp(lnu))
                - 0.5*exp(lnu)*Rf_tetragamma(0.5*(1+exp(lnu))),2.0)/(2*pow(-2*exp(-lnu)
-               *(3+exp(lnu))/pow(1+exp(lnu),2.0) + Rf_trigamma(0.5*exp(lnu)) 
-               - Rf_trigamma(0.5*(1+exp(lnu))), 2.0)) + (8*exp(lnu)/pow(1+exp(lnu),3.0) 
-               + 2/pow(1+exp(lnu), 2.0) -12*exp(lnu)*(3+exp(lnu))/pow(1+exp(lnu), 4.0) 
+               *(3+exp(lnu))/pow(1+exp(lnu),2.0) + Rf_trigamma(0.5*exp(lnu))
+               - Rf_trigamma(0.5*(1+exp(lnu))), 2.0)) + (8*exp(lnu)/pow(1+exp(lnu),3.0)
+               + 2/pow(1+exp(lnu), 2.0) -12*exp(lnu)*(3+exp(lnu))/pow(1+exp(lnu), 4.0)
                - 4*(3+exp(lnu))/pow(1+exp(lnu),3.0) - 2*exp(-lnu)*(3+exp(lnu))/pow(1+exp(lnu),2.0)
                + 0.5*exp(lnu)*Rf_tetragamma(0.5*exp(lnu)) - 0.5*exp(lnu)*Rf_tetragamma(0.5*
                (1+exp(lnu))) + 0.25*exp(2*lnu)*Rf_pentagamma(0.5
                *exp(lnu)) - 0.25*exp(2*lnu)*Rf_pentagamma(0.5*(1+exp(lnu))))/(2*(-2*exp(-lnu)
-               *(3+exp(lnu))/pow(1+exp(lnu),2.0)+Rf_trigamma(0.5*exp(lnu)) - 
+               *(3+exp(lnu))/pow(1+exp(lnu),2.0)+Rf_trigamma(0.5*exp(lnu)) -
                Rf_trigamma(0.5*(1+exp(lnu)))));
   return -hh;
 }
@@ -431,12 +431,12 @@ MCMCmetrop_cpp(Function lfun,
     // acceptance ratio of prior and jumping density
     logAccRat = user_fun_eval(lfun, propPar, myframe)-
                 user_fun_eval(lfun, ans.col(i-1), myframe);
-    
+
     if(R_finite(logAccRat) != true){
       ans.col(i) = ans.col(i-1);
-    } else {          
+    } else {
       rUnif = as_scalar(arma::randu(1));
-    
+
       ans.col(i) = ans.col(i-1);
       if (log(rUnif) <= logAccRat) {
         nacc += 1;
@@ -445,23 +445,23 @@ MCMCmetrop_cpp(Function lfun,
     // print some information on the simulation process
       if(i%verbose == 0 ) Rprintf("\rMCMC: iteration %d of %d, accpted %d, acc. ratio %f\r",
       i, mcmc+burnin, nacc, static_cast<double>(nacc)/static_cast<double>(i+1));
-    
+
     // for stopping R computations
       }
       R_CheckUserInterrupt();
     }
   Rprintf("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-  Rprintf("MCMC accepteance ratio was: %3.5f", 
+  Rprintf("MCMC accepteance ratio was: %3.5f",
     static_cast<double>(nacc) / static_cast<double>(mcmc+burnin));
   Rprintf("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-  
+
 //  arma::mat ans2 = ans(arma::span::all,arma::span(burnin-1,mcmc-1));
-  
+
   return ans;
 }
 
 // [[Rcpp::export]]
-double 
+double
 mlChib_cpp(Function lfun,
           arma::vec hatPar,
           arma::mat V,
@@ -473,23 +473,23 @@ mlChib_cpp(Function lfun,
   int nNum = mcmc.n_cols, p = mcmc.n_rows;
   double den = 0.0, num = 0.0;
   arma::vec minNum(2, arma::fill::zeros), minDen(2, arma::fill::zeros);
-  minNum(0) = minDen(0)= 1.0;
-  
+  minNum(0) = minDen(0) = 1.0;
+
   arma::vec propPar(p, arma::fill::zeros);
   double lfun_hatpar = user_fun_eval(lfun, hatPar, myframe);
-  
+
   for(int i=0; i<nNum; i++){
-    minNum(1) = exp(lfun_hatpar - 
+    minNum(1) = exp(lfun_hatpar -
                 user_fun_eval(lfun, mcmc.col(i), myframe));
     num += min(minNum)*dmvt(mcmc.col(i),hatPar, V, p, df, false);
-    
+
     propPar = rmvt(hatPar, V, p, df);
     minDen(1) = exp(user_fun_eval(lfun, propPar, myframe)-lfun_hatpar);
     den += min(minDen);
         // print some information on the simulation process
     if(i%verbose == 0 ) Rprintf("\rChib's marg. lik at iteration %d of %d, is %f",
     i, nNum, log(num)-log(den));
-    
+
     // for stopping R computations
     R_CheckUserInterrupt();
   }
@@ -509,7 +509,7 @@ mlIS_cpp(Function lfun,
 {
   double malik = 0.0, wsamp = 0.0;
   arma::vec simpar(p, arma::fill::zeros);
-  
+
   for (int i=0; i<nsim; i++){
     simpar = rmvt(hatPar, V, p, df);
     wsamp = user_fun_eval(lfun, simpar, myframe) - dmvt(simpar, hatPar, V, p, df, true);
@@ -517,14 +517,14 @@ mlIS_cpp(Function lfun,
       wsamp = -1000.0;
     }
     malik += exp(wsamp);
-    if(i%verbose == 0 ) Rprintf("\rImportance sampling marg. lik at iteration %d of %d, is %f",
-    i, nsim, malik/static_cast<double>(i));
+    if(i%verbose == 0 ) Rprintf("\rIteration: %d of %d, Log marg. lik: %f",
+    i, nsim, log(malik/static_cast<double>(i)));
   }
   return log(malik) - log(nsim);
 }
 
 //[[Rcpp::export]]
-double 
+double
 nlpost_bod2(arma::vec beta,
     		  double lsig,
 				  arma::vec y,
@@ -534,7 +534,7 @@ nlpost_bod2(arma::vec beta,
 				  arma::mat SigBeta,
 				  double sigScale) {
   double ll = 0.0, eta = 0.0, df = 2.0;
-  
+
   for(int i=0; i<n; i++){
     eta = beta(0)*(1-exp(-x(i)/beta(1)));
     ll += Rf_dnorm4(y(i), eta, exp(lsig), true);
@@ -563,14 +563,14 @@ double nlpostT_bod2(arma::vec beta,
     ll += Rf_dt(zi, exp(lnu), true) - lsig;
   }
   //prior for beta
-  ll += dmvt(beta, muBeta, SigBeta, 2, df, true) 
+  ll += dmvt(beta, muBeta, SigBeta, 2, df, true)
   		+ dhalfCauchy(exp(lsig), sigScale, true)+ lsig//prior for sigma
       + prJeff(exp(lnu), true) + lnu;// prior for nu
   return -ll;
 }
 
 // [[Rcpp::export]]
-arma::vec 
+arma::vec
 grad_bod2(arma::vec beta,
     		  double lsig,
 				  arma::vec y,
@@ -600,7 +600,7 @@ grad_bod2(arma::vec beta,
 }
 
 // [[Rcpp::export]]
-arma::mat 
+arma::mat
 hess_bod2(arma::vec beta,
       	  double lsig,
 				  arma::vec y,
@@ -613,7 +613,7 @@ hess_bod2(arma::vec beta,
   double zi=0.0, df = 2;
   arma::mat hh(3,3, arma::fill::zeros);
   for(int i=0; i<n; i++){
-    zi = (y(i) - beta(0)*(1-exp(-x(i)/beta(1))))/exp(lsig); 
+    zi = (y(i) - beta(0)*(1-exp(-x(i)/beta(1))))/exp(lsig);
     hh(0,1) += - beta(0)*exp(-x(i)/beta(1))*x(i)*(-1.0 + exp(-x(i)/beta(1)))/
               (pow(beta(1), 2.0)*exp(lsig)*exp(lsig)) - exp(-x(i)/beta(1))*x(i)
               *zi/(pow(beta(1), 2.0)*exp(lsig));
@@ -624,19 +624,19 @@ hess_bod2(arma::vec beta,
               (pow(beta(1), 4.0)*exp(lsig)*exp(lsig)) +
               2*beta(0)*exp(-x(i)/beta(1))*x(i)*zi/(pow(beta(1), 3.0)*exp(lsig))
               - beta(0)*exp(-x(i)/beta(1))*x(i)*x(i)*zi/
-              (pow(beta(1), 4.0)*exp(lsig)); 
+              (pow(beta(1), 4.0)*exp(lsig));
 //    hh(2,2) += 1.0/pow(exp(lsig),2.0) - 3.0*zi*zi/pow(exp(lsig),2.0);
     hh(2,2) += -2*exp(-2*lsig)*zi*zi*exp(lsig)*exp(lsig);
   }
   hh = hh + trans(hh) - diagmat(hh);
-  
-  hh(arma::span(0,1),arma::span(0,1)) += hessldmvt(beta, muBeta, SigBeta, 2, df = 2); 
+
+  hh(arma::span(0,1),arma::span(0,1)) += hessldmvt(beta, muBeta, SigBeta, 2, df = 2);
   hh(2,2) += -4*exp(2*lsig)*sigScale*sigScale/pow(exp(2*lsig) + sigScale*sigScale, 2.0);
   return -hh;
 }
 
 // [[Rcpp::export]]
-arma::vec 
+arma::vec
 gradT_bod2(arma::vec beta,
      		 double lsig,
  				 double lnu,
@@ -649,19 +649,19 @@ gradT_bod2(arma::vec beta,
 {
   double df = 2, zi = 0.0, zi2 = 0.0;
   arma::vec gr(4, arma::fill::zeros);
-  
+
     //update with data
   for(int i=0; i<n; i++){
     zi = (y(i) - beta(0)*(1-exp(-x(i)/beta(1))))/exp(lsig);
     zi2 = zi*zi;
     gr(0) += -(-1.0 + exp(-x(i)/beta(1)))*zi*(1+exp(lnu))
             /(exp(lsig)*(zi*zi + exp(lnu)));
-            
+
     gr(1) += -beta(0)*exp(-x(i)/beta(1))*x(i)*zi*(1+exp(lnu))/
             (beta(1)*beta(1)*exp(lsig)*(zi2 + exp(lnu)));
-            
+
     gr(2) += -1.0 + zi2*(1.0+exp(lnu))/(zi2 + exp(lnu));
-    
+
     gr(3) += 0.5*exp(lnu) - 0.5*exp(lnu)*(1+exp(lnu))/(exp(lnu) + zi2)
            + 0.5*exp(lnu)*lnu - 0.5*exp(lnu)*log(exp(lnu)+zi2)
            - 0.5*exp(lnu)*Rf_digamma(0.5*exp(lnu)) + 0.5*exp(lnu)
@@ -671,12 +671,12 @@ gradT_bod2(arma::vec beta,
   arma::vec grb = grldmvt(beta, muBeta, SigBeta, 2, df);
   gr(0) += grb(0);
   gr(1) += grb(1);
-  
+
   gr(2) +=  1 - 2*exp(2*lsig)/(exp(2*lsig) + sigScale*sigScale);
 
   gr(3) += 1 + 0.5*
-          (1 - exp(lnu)/(3+exp(lnu)) + 
-          (2*exp(-lnu)*(3+9*exp(lnu)+2*exp(2*lnu))/pow(1+exp(lnu), 3.0) 
+          (1 - exp(lnu)/(3+exp(lnu)) +
+          (2*exp(-lnu)*(3+9*exp(lnu)+2*exp(2*lnu))/pow(1+exp(lnu), 3.0)
           + 0.5*exp(lnu)*Rf_tetragamma(0.5*exp(lnu))
           - 0.5*exp(lnu)*Rf_tetragamma(0.5*(1+exp(lnu))))
           /(-2.0*(3.0+exp(lnu))*exp(-lnu)/(pow(1+exp(lnu), 2.0)) +
@@ -687,7 +687,7 @@ gradT_bod2(arma::vec beta,
 }
 
 // [[Rcpp::export]]
-arma::mat 
+arma::mat
 hessT_bod2(arma::vec beta,
        	 double lsig,
  				 double lnu,
@@ -702,34 +702,34 @@ hessT_bod2(arma::vec beta,
   arma::mat hh(4,4, arma::fill::zeros);
   for(int i=0; i<n; i++){
     mEb2 = 1-exp(-x(i)/beta(1));
-    zi = (y(i) - beta(0)*mEb2)/exp(lsig); 
-    
+    zi = (y(i) - beta(0)*mEb2)/exp(lsig);
+
     hh(0,0) += 2*exp(-2*lsig)*mEb2*mEb2*(1+exp(lnu))*zi*zi/
               pow(exp(lnu) + zi*zi, 2.0) - exp(-2*lsig)*mEb2*mEb2*(1+exp(lnu))
               /(exp(lnu)+zi*zi);
-              
+
     hh(1,1) += 2*pow(beta(0)*x(i)*zi, 2.0)*exp(-2.0*x(i)/beta(1) -2*lsig)*(1+exp(lnu))
-              /pow(beta(1)*beta(1)*(exp(lnu)+zi*zi), 2.0) 
+              /pow(beta(1)*beta(1)*(exp(lnu)+zi*zi), 2.0)
               - exp(-2*x(i)/beta(1) - 2*lsig)*(1+exp(lnu))*pow(beta(0)*x(i),2.0)/(pow(beta(1), 4.0)*(exp(lnu)+zi*zi))
-              + 2*beta(0)*exp(-x(i)/beta(1) -lsig)*(1+exp(lnu))*x(i)*zi/(pow(beta(1), 3.0)*(exp(lnu)+zi*zi)) 
+              + 2*beta(0)*exp(-x(i)/beta(1) -lsig)*(1+exp(lnu))*x(i)*zi/(pow(beta(1), 3.0)*(exp(lnu)+zi*zi))
               - beta(0)*exp(-x(i)/beta(1)-lsig)*(1+exp(lnu))*x(i)*x(i)*zi/(pow(beta(1), 4.0)*(exp(lnu)+zi*zi));
-              
+
     hh(2,2) += 2*(1+exp(lnu))*pow(zi,4.0)/pow(exp(lnu)+zi*zi,2.0) - 2*(1+exp(lnu))*zi*zi
               /(exp(lnu)+zi*zi);
-              
+
     hh(3,3) += exp(lnu) + 0.5*exp(2*lnu)*(1+exp(lnu))/pow(exp(lnu)+zi*zi,2.0) -
                exp(2*lnu)/(exp(lnu)+zi*zi) - 0.5*exp(lnu)*(1+exp(lnu))/(exp(lnu)+zi*zi) +
                0.5*exp(lnu)*lnu - 0.5*exp(lnu)*log(exp(lnu)+zi*zi) - 0.5*exp(lnu)
-               *Rf_digamma(0.5*exp(lnu)) + 0.5*exp(lnu)*Rf_digamma(0.5*(exp(lnu)+1)) 
+               *Rf_digamma(0.5*exp(lnu)) + 0.5*exp(lnu)*Rf_digamma(0.5*(exp(lnu)+1))
                -0.25*exp(2*lnu)*Rf_trigamma(0.5*exp(lnu)) + 0.25*exp(2*lnu)*Rf_trigamma(0.5*(exp(lnu)+1));
-               
+
     hh(0,1) += 2*beta(0)*exp(-x(i)/beta(1) - 2.0*lsig)*(-mEb2)*(1+exp(lnu))*x(i)*zi*zi/
               pow(beta(1)*(exp(lnu) + zi*zi), 2.0) - beta(0)*exp(-x(i)/beta(1) -2.0*lsig)*(-mEb2)*(1+exp(lnu))*x(i)/
               (beta(1)*beta(1)*(exp(lnu)+zi*zi)) - exp(-x(i)/beta(1)-lsig)*(1.0+exp(lnu))*x(i)*zi
               /(beta(1)*beta(1)*(exp(lnu)+zi*zi));
-    hh(0,2) += -2*exp(-lsig)*(-mEb2)*(1+exp(lnu))*pow(zi,3.0)/pow(exp(lnu)+zi*zi, 2.0) 
+    hh(0,2) += -2*exp(-lsig)*(-mEb2)*(1+exp(lnu))*pow(zi,3.0)/pow(exp(lnu)+zi*zi, 2.0)
               + 2*exp(-lsig)*(-mEb2)*(1+exp(lnu))*zi/(exp(lnu)+zi*zi);
-    hh(0,3) += exp(-lsig+lnu)*(-mEb2)*(1+exp(lnu))*zi/pow(exp(lnu)+zi*zi, 2.0) - 
+    hh(0,3) += exp(-lsig+lnu)*(-mEb2)*(1+exp(lnu))*zi/pow(exp(lnu)+zi*zi, 2.0) -
                exp(-lsig+lnu)*(-mEb2)*zi/(exp(lnu)+zi*zi);
     hh(1,2) += -2*beta(0)*exp(-x(i)/beta(1) - lsig)*(1+exp(lnu))*x(i)*pow(zi,3.0)
               /pow(beta(1)*(exp(lnu)+zi*zi), 2.0) + 2*beta(0)*exp(-x(i)/beta(1) -lsig)*(1+exp(lnu))*x(i)*zi/
@@ -740,48 +740,22 @@ hessT_bod2(arma::vec beta,
   }
     hh = hh + trans(hh) - diagmat(hh);
     hh(arma::span(0,1),arma::span(0,1)) += hessldmvt(beta, muBeta, SigBeta, 2, df = 2);
-    
+
     hh(2,2) += -4*exp(2*lsig)*sigScale*sigScale/pow(exp(2*lsig) + sigScale*sigScale, 2.0);
-    
-    hh(3,3) += 0.5*exp(2*lnu)/pow(3+exp(lnu),2.0) - 0.5*exp(lnu)/(3+exp(lnu)) 
+
+    hh(3,3) += 0.5*exp(2*lnu)/pow(3+exp(lnu),2.0) - 0.5*exp(lnu)/(3+exp(lnu))
               -pow(
                -2/pow(1+exp(lnu),2.0) + 4*(3+exp(lnu))/pow(1+exp(lnu),3.0) + 2*exp(-lnu)
                *(3+exp(lnu))/pow(1+exp(lnu),2.0) + 0.5*exp(lnu)*Rf_tetragamma(0.5*exp(lnu))
                - 0.5*exp(lnu)*Rf_tetragamma(0.5*(1+exp(lnu))),2.0)/(2*pow(-2*exp(-lnu)
-               *(3+exp(lnu))/pow(1+exp(lnu),2.0) + Rf_trigamma(0.5*exp(lnu)) 
-               - Rf_trigamma(0.5*(1+exp(lnu))), 2.0)) + (8*exp(lnu)/pow(1+exp(lnu),3.0) 
-               + 2/pow(1+exp(lnu), 2.0) -12*exp(lnu)*(3+exp(lnu))/pow(1+exp(lnu), 4.0) 
+               *(3+exp(lnu))/pow(1+exp(lnu),2.0) + Rf_trigamma(0.5*exp(lnu))
+               - Rf_trigamma(0.5*(1+exp(lnu))), 2.0)) + (8*exp(lnu)/pow(1+exp(lnu),3.0)
+               + 2/pow(1+exp(lnu), 2.0) -12*exp(lnu)*(3+exp(lnu))/pow(1+exp(lnu), 4.0)
                - 4*(3+exp(lnu))/pow(1+exp(lnu),3.0) - 2*exp(-lnu)*(3+exp(lnu))/pow(1+exp(lnu),2.0)
                + 0.5*exp(lnu)*Rf_tetragamma(0.5*exp(lnu)) - 0.5*exp(lnu)*Rf_tetragamma(0.5*
                (1+exp(lnu))) + 0.25*exp(2*lnu)*Rf_pentagamma(0.5
                *exp(lnu)) - 0.25*exp(2*lnu)*Rf_pentagamma(0.5*(1+exp(lnu))))/(2*(-2*exp(-lnu)
-               *(3+exp(lnu))/pow(1+exp(lnu),2.0)+Rf_trigamma(0.5*exp(lnu)) - 
+               *(3+exp(lnu))/pow(1+exp(lnu),2.0)+Rf_trigamma(0.5*exp(lnu)) -
                Rf_trigamma(0.5*(1+exp(lnu)))));
   return -hh;
-}
-
-
-arma::vec seq_C(double a, double cent, double b, int lengthOut) {
-  arma::vec out(lengthOut);
-  out.fill(a);
-  out[lengthOut-1] = b;
-  double width = (b-a)/(lengthOut-1);
-  for(int i=1; i<(lengthOut -1); i++){
-    out(i) = out(i-1) + width;
-  }
-  out(lengthOut/2) = cent;
-  return out;
-}
-
-// [[Rcpp::export]]
-List seqMat(arma::vec par, arma::vec se, int lengthOut, int q, double delta){
-  arma::vec av = par - delta*se;
-  arma::vec bv = par + delta*se;
-  arma::mat out(lengthOut, q, arma::fill::zeros);
-  for(int i=0; i<q; i++){
-    out.col(i) = seq_C(av(i), par(i), bv(i), lengthOut);
-  }
-  return List::create(Named("parVal") = out,
-                      Named("lo") = av,
-                      Named("up") = bv);
 }

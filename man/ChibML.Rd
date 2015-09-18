@@ -9,7 +9,7 @@ ChibML(logfun, theta.star, tune, V, mcmcsamp, df, verbose)
 \arguments{
 \item{logfun}{The logarithm of the objective function}
 
-\item{theta.star}{The starting value of the inner MCMC sampling required by the Chib & Jeliazikov's method.}
+\item{theta.star}{The starting value of the inner MCMC sampling and the value required by the Chib & Jeliazikov's method. This must be a high denstiy point, such as the posterior mean, median or mode.}
 
 \item{tune}{The tunning value to be used to achieve the desired efficiency}
 

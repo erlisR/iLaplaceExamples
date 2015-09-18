@@ -36,24 +36,41 @@ The prior distribution is bivariate normal with independent components, with mea
 
 library(VGAM)
 library(iLaplace)
+library(iLaplaceExamples)
 set.seed(12)
 
 # generate the data
 data <- rgompertz(n = 50, shape = exp(2), scale = exp(3))
 
-#find the posterior mode and Hessian at the mode
-opt.post = nlminb(c(2,3), obj = nlpost_gomp,
-                  gradient=grad_gomp,data = data)
-opt.post$hessian = hessian(nlpost_gomp,
-                            opt.post$par, data = data)
+ff <- function(x, ...) nlpost_gomp(param = x, ...)
+ff.gr <- function(x, ...) grad_gomp(param = x, ...)
+ff.hess <- function(x, ...) hess_gomp(param = x, ...)
 
- # draw a posterior sample
-mcmc.gomp = MHmcmc(logfun = function(x) -nlpost_gomp(x, data=data),
-                    burnin=5000, mcmc=1e+5, thin=2, tune=1.1,
-                    V=solve(opt.post$hessian), df=5,
-                    theta.init=opt.post$par, verbose=10000)
+# find the posterior mode and Hessian at the mode
+opt.post = nlminb(c(2,3), obj = ff, gradient = ff.gr,
+                  hessian = ff.hess, data = data)
+opt.post$hessian = ff.hess(opt.post$par, data = data)
 
+# draw a posterior sample
+mcmc.gomp = MHmcmc(logfun = function(x) -ff(x, data),
+                   burnin = 5000, mcmc = 1e+6, thin = 2, tune = 1.1,
+                   V = solve(opt.post$hessian), df = 5,
+                   theta.init = opt.post$par, verbose = 10000)
+# look at the plots
 plot(mcmc.gomp)
+
+# marginal likelihood by the improved Laplace of Ruli et al. (2015)
+iLap.logM <- iLaplace(fullOpt = opt.post, ff = ff, ff.gr = ff.gr, ff.hess = ff.hess,
+                      control = list(sp.points = 100, delta = 13, n.cores = 2),
+                      clEvalQ = c("iLaplaceExamples"), data = data)
+
+# marginal likelihood by the standard Laplace
+Lap.logM <- log(2*pi) - opt.post$objective - 0.5*determinant(opt.post$hessian)$mod
+
+# marginal likelihood by improtance sampling
+is.logM <- isML(logfun = function(x) -ff(x, data), nsim = 1e+6,
+                theta.hat = opt.post$par, tune = 1.2, V = solve(opt.post$hessian),
+               df = 5, verbose = 100000)
 }
 }
 \seealso{

@@ -6,6 +6,42 @@
 
 using namespace Rcpp;
 
+// nlpost_gomp
+double nlpost_gomp(NumericVector param, NumericVector data);
+RcppExport SEXP iLaplaceExamples_nlpost_gomp(SEXP paramSEXP, SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
+    __result = Rcpp::wrap(nlpost_gomp(param, data));
+    return __result;
+END_RCPP
+}
+// grad_gomp
+NumericVector grad_gomp(NumericVector param, NumericVector data);
+RcppExport SEXP iLaplaceExamples_grad_gomp(SEXP paramSEXP, SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
+    __result = Rcpp::wrap(grad_gomp(param, data));
+    return __result;
+END_RCPP
+}
+// hess_gomp
+NumericMatrix hess_gomp(NumericVector param, NumericVector data);
+RcppExport SEXP iLaplaceExamples_hess_gomp(SEXP paramSEXP, SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
+    __result = Rcpp::wrap(hess_gomp(param, data));
+    return __result;
+END_RCPP
+}
 // nlDen_mvt
 double nlDen_mvt(arma::vec x, int m, double df);
 RcppExport SEXP iLaplaceExamples_nlDen_mvt(SEXP xSEXP, SEXP mSEXP, SEXP dfSEXP) {
@@ -466,139 +502,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::mat >::type SigBeta(SigBetaSEXP);
     Rcpp::traits::input_parameter< double >::type sigScale(sigScaleSEXP);
     __result = Rcpp::wrap(hessT_bod2(beta, lsig, lnu, y, x, n, muBeta, SigBeta, sigScale));
-    return __result;
-END_RCPP
-}
-// seqMat
-List seqMat(arma::vec par, arma::vec se, int lengthOut, int q, double delta);
-RcppExport SEXP iLaplaceExamples_seqMat(SEXP parSEXP, SEXP seSEXP, SEXP lengthOutSEXP, SEXP qSEXP, SEXP deltaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::vec >::type par(parSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type se(seSEXP);
-    Rcpp::traits::input_parameter< int >::type lengthOut(lengthOutSEXP);
-    Rcpp::traits::input_parameter< int >::type q(qSEXP);
-    Rcpp::traits::input_parameter< double >::type delta(deltaSEXP);
-    __result = Rcpp::wrap(seqMat(par, se, lengthOut, q, delta));
-    return __result;
-END_RCPP
-}
-// ldetHessBlocks
-arma::vec ldetHessBlocks(arma::mat hessMat, int dimMat);
-RcppExport SEXP iLaplaceExamples_ldetHessBlocks(SEXP hessMatSEXP, SEXP dimMatSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::mat >::type hessMat(hessMatSEXP);
-    Rcpp::traits::input_parameter< int >::type dimMat(dimMatSEXP);
-    __result = Rcpp::wrap(ldetHessBlocks(hessMat, dimMat));
-    return __result;
-END_RCPP
-}
-// SEv
-arma::vec SEv(arma::mat hessMat, int dimMat);
-RcppExport SEXP iLaplaceExamples_SEv(SEXP hessMatSEXP, SEXP dimMatSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::mat >::type hessMat(hessMatSEXP);
-    Rcpp::traits::input_parameter< int >::type dimMat(dimMatSEXP);
-    __result = Rcpp::wrap(SEv(hessMat, dimMat));
-    return __result;
-END_RCPP
-}
-// nlpost_rebin
-double nlpost_rebin(arma::vec u, arma::vec theta, arma::vec y, int n);
-RcppExport SEXP iLaplaceExamples_nlpost_rebin(SEXP uSEXP, SEXP thetaSEXP, SEXP ySEXP, SEXP nSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::vec >::type u(uSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    __result = Rcpp::wrap(nlpost_rebin(u, theta, y, n));
-    return __result;
-END_RCPP
-}
-// grU_rebin
-arma::vec grU_rebin(arma::vec u, arma::vec theta, arma::vec y, int n);
-RcppExport SEXP iLaplaceExamples_grU_rebin(SEXP uSEXP, SEXP thetaSEXP, SEXP ySEXP, SEXP nSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::vec >::type u(uSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    __result = Rcpp::wrap(grU_rebin(u, theta, y, n));
-    return __result;
-END_RCPP
-}
-// hessU_rebin
-arma::mat hessU_rebin(arma::vec u, arma::vec theta, arma::vec y, int n);
-RcppExport SEXP iLaplaceExamples_hessU_rebin(SEXP uSEXP, SEXP thetaSEXP, SEXP ySEXP, SEXP nSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::vec >::type u(uSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    __result = Rcpp::wrap(hessU_rebin(u, theta, y, n));
-    return __result;
-END_RCPP
-}
-// nlogH
-double nlogH(arma::vec randPar, arma::vec fixPar, List data);
-RcppExport SEXP iLaplaceExamples_nlogH(SEXP randParSEXP, SEXP fixParSEXP, SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::vec >::type randPar(randParSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type fixPar(fixParSEXP);
-    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
-    __result = Rcpp::wrap(nlogH(randPar, fixPar, data));
-    return __result;
-END_RCPP
-}
-// grad_nlogH
-arma::vec grad_nlogH(arma::vec randPar, arma::vec fixPar, List data);
-RcppExport SEXP iLaplaceExamples_grad_nlogH(SEXP randParSEXP, SEXP fixParSEXP, SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::vec >::type randPar(randParSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type fixPar(fixParSEXP);
-    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
-    __result = Rcpp::wrap(grad_nlogH(randPar, fixPar, data));
-    return __result;
-END_RCPP
-}
-// hess_nlogH
-arma::mat hess_nlogH(arma::vec randPar, arma::vec fixPar, List data);
-RcppExport SEXP iLaplaceExamples_hess_nlogH(SEXP randParSEXP, SEXP fixParSEXP, SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::vec >::type randPar(randParSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type fixPar(fixParSEXP);
-    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
-    __result = Rcpp::wrap(hess_nlogH(randPar, fixPar, data));
-    return __result;
-END_RCPP
-}
-// ldetHess_nlogH
-NumericVector ldetHess_nlogH(arma::vec randPar, arma::vec fixPar, List data);
-RcppExport SEXP iLaplaceExamples_ldetHess_nlogH(SEXP randParSEXP, SEXP fixParSEXP, SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< arma::vec >::type randPar(randParSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type fixPar(fixParSEXP);
-    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
-    __result = Rcpp::wrap(ldetHess_nlogH(randPar, fixPar, data));
     return __result;
 END_RCPP
 }

@@ -106,47 +106,67 @@ The prior for \code{beta} is the multivariate Studnet's \eqn{t}{t} with the appr
 \examples{
 \dontrun{
 
-# the data
-data(Lubricant)
 library(iLaplace)
-dataObs = list(y = Lubricant$viscos, x1 = Lubricant$tempC,
-               x2=Lubricant$pressure/1000)
-y = Lubricant$viscos
-x1 = Lubricant$tempC
-x2 = Lubricant$pressure/1000
+
+# set the data
+data(BOD2)
+y = BOD2$demand
+Time = BOD2$Time
 n = length(y)
-muBeta = rep(0, 9)
-SigBeta = matrix(0, 9,9)
-diag(SigBeta) = 50
+muBeta = rep(0, 2)
+SigBeta = matrix(0, 2,2)
+diag(SigBeta) = 10
 sigScale = 10
 dfprop = 3
 
-# find the maximum
-init = c(10.522, 20.6, 1.464, -0.258, 0.022,
-         0.394, 0.036, 46.566, -0.455, -3.195)
+# the objective function and derivatives
+ff = function(pp, ...) nlpost_bod2(beta = pp[1:2], lsig = pp[3], ...)
+ff.gr = function(pp, ...) grad_bod2(beta = pp[1:2], lsig = pp[3], ...)
+ff.hess = function(pp, ...) hess_bod2(beta = pp[1:2], lsig = pp[3], ...)
 
-ff = function(x) nlpost_lub(beta = x[1:9], lsig = x[10],
-                            y = y, x1 = x1, x2 = x2,
-                            n = n, muBeta = muBeta,
-                            SigBeta = SigBeta, sigScale = sigScale)
+# find the mode
+init <- c(5, 2, 0.5)
+opt.post = nlminb(init, obj = ff, gradient = ff.gr, hessian = ff.hess,
+                  y = y, Time = Time, n =  n, muBeta = muBeta,
+                  SigBeta = SigBeta, sigScale = sigScale, control = list(trace = 1))
+opt.post$hessian = ff.hess(opt.post$par, y = y, Time = Time, n =  n, muBeta = muBeta,
+                           SigBeta = SigBeta, sigScale = sigScale)
 
-ff.gr = function(x) grad_lub(beta = x[1:9], lsig = x[10], y = y,
-                             x1 = x1, x2 = x2, n = n, muBeta = muBeta,
-                             SigBeta = SigBeta, sigScale = sigScale)
+# simulate from the posterior
+mcmc.post = MHmcmc(logfun = function(x) -ff(x, y = y, Time = Time, n =  n, muBeta = muBeta,
+                                            SigBeta = SigBeta, sigScale = sigScale),
+                   burnin = 20000, mcmc = 1e+6,
+                   thin = 5, tune = 0.98, V = solve(opt.post$hessian),
+                   df = dfprop, theta.init = init, verbose = 50000)
 
-ff.hess = function(x) hess_lub(beta = x[1:9], lsig = x[10], y = y, x1 = x1,
-                               x2 = x2, n = n, muBeta = muBeta,
-                               SigBeta = SigBeta, sigScale = sigScale)
 
-# find the minimum
-opt.post = nlminb(init, obj=ff, gradient = ff.gr, hessian = ff.h,
-                  control = list(trace = 1))
-opt.post$hessian = ff.h(opt.post$par)
+# marginal likelihood by Chib's method
+logM.Chib <- ChibML(logfun = function(x) -ff(x, y = y, Time = Time, n =  n,
+                                            muBeta = muBeta, SigBeta = SigBeta,
+                                            sigScale = sigScale),
+                   theta.star = opt.post$par,
+                   tune = 1.5, V = solve(opt.post$hessian), t(mcmc.post),
+                   df = dfprop, verbose = 100000)
 
-# draw an MCMC sample
-mcmc.post = MHmcmc(logfun = function(x) -ff(x), burnin=5000,
-                    mcmc=1e+5, thin=2, tune=0.9, V=solve(opt.post$hessian),
-                    df=dfprop, theta.init=init, verbose=10000)
+# marginal likelihood by the improved Laplace
+logM.iLap <- iLaplace(fullOpt = opt.post, ff = ff, ff.gr = ff.gr, ff.hess = ff.hess,
+                      control = list(sp.points = 100, delta = 13, n.cores = 3),
+                      clEvalQ = c("iLaplaceExamples"), y = y, Time = Time, n =  n,
+                      muBeta = muBeta, SigBeta = SigBeta,
+                      sigScale = sigScale)
+
+logM.Lap <- 3*log(2*pi)/2 - opt.post$objective - 0.5*determinant(opt.post$par)$mod
+# marginal likelihood by importance samling
+logM.IS <- isML(logfun = function(x) -ff(x, y = y, Time = Time, n =  n,
+                                         muBeta = muBeta, SigBeta = SigBeta,
+                                         sigScale = sigScale), nsim = 1e+6,
+                theta.hat = opt.post$par, tune = 1.5,
+                V = solve(opt.post$hessian),df = dfprop, verbose = 1000)
+logM.iLap
+logM.Lap
+logM.IS
+logM.Chib
+
 }
 }
 \references{

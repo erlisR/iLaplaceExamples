@@ -3,7 +3,7 @@
 ##' @description The function computes the marginal likelihood, i.e. the posterior normalising constant, with the method of Chib & Jeliazikov (2001) for user-written functions, from which an MCMC posterior sample is available.
 ##' @usage ChibML(logfun, theta.star, tune, V, mcmcsamp, df, verbose)
 ##' @param logfun The logarithm of the objective function
-##' @param theta.star The starting value of the inner MCMC sampling required by the Chib & Jeliazikov's method.
+##' @param theta.star The starting value of the inner MCMC sampling and the value required by the Chib & Jeliazikov's method. This must be a high denstiy point, such as the posterior mean, median or mode.
 ##' @param tune The tunning value to be used to achieve the desired efficiency
 ##' @param V The proposal scale matrix
 ##' @param mcmcsamp The MCMC sample from the joint posterior
@@ -100,7 +100,7 @@ ChibML <- function(logfun, theta.star, tune, V, mcmcsamp, df, verbose){
               df,
               verbose,
               my.env)
-  return(ans)
+  return(logfun(theta.star) - ans)
 }
 
 ##' @name isML
@@ -185,7 +185,7 @@ ChibML <- function(logfun, theta.star, tune, V, mcmcsamp, df, verbose){
 ##'
 ##' @rdname isML
 ##' @export
-isML <- function(logfun, nsim, theta.hat, tune, V, df, verbose){
+isML <- function(logfun, nsim = 10000, theta.hat, tune, V, df = 5, verbose = 1000){
   my.env <- environment(fun = logfun)
 
   tune <- vector.tune(tune, length(theta.hat))

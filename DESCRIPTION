@@ -9,7 +9,7 @@ Authors@R: c(
        person("Laura", "Ventura", role = "aut"))
 Description: Extra utilities and examples on computing marginal likelihood with the improved Laplace approximation of Ruli et al. (2015) and with alternative methods as Markov chain Monte Carlo and importance sampling.
 Depends: R(>= 3.0.0)
-Imports: coda(>= 0.16.1)
+Imports: coda(>= 0.16.1), Rcpp
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: lattice, rjags, VGAM
 License: GPL(>=2)
