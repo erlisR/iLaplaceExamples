@@ -55,10 +55,10 @@
 ##' opt.post$hessian = ff.h(opt.post$par)
 
 ##' # the mcmc sample
-##' mcmc.post = MHmcmcR(logfun = function(x) -ff(x),
-##'                     burnin=5000, mcmc=1e+5, thin=1, tune=0.5,
-##'                     V=solve(opt.post$hessian), df=dfprop,
-##'                     theta.init=init, verbose=10000)
+##' mcmc.post = MHmcmc(logfun = function(x) -ff(x),
+##'                burnin = 40000, mcmc = 1e+5, thin = 1, tune = 0.5,
+##'                V = solve(opt.post$hessian), df = dfprop,
+##'                theta.init = init, verbose = 10000)
 
 ##' # the marginal posteriors
 ##' labl <- c("beta1", "beta2", "beta3", "beta4", "beta5",
@@ -105,7 +105,7 @@
 ##' Robert C. P. & Casella G. (2004).
 ##'  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 ##'
-##' @seealso \code{\link[iLaplaceExamples]{Lubricant}}, \code{\link[iLaplaceExamples]{nlpost_lub}}
+##' @seealso \code{\link[iLaplaceExamples]{Lubricant}}, \code{\link[iLaplaceExamples]{nlpost_lub}},  \code{\link[iLaplaceExamples]{nlpost_gomp}}
 ##'
 ##' @export
 MHmcmc <- function(logfun, burnin, mcmc, thin, tune, V, df, theta.init, verbose){
@@ -131,7 +131,7 @@ MHmcmc <- function(logfun, burnin, mcmc, thin, tune, V, df, theta.init, verbose)
                   logfun,
                   theta.init,
                   V,
-                  mcmc,
+                  mcmc+burnin,
                   burnin,
                   df,
                   verbose,

@@ -505,3 +505,45 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// nlpost_rebin
+double nlpost_rebin(arma::vec u, arma::vec theta, arma::vec y, int n);
+RcppExport SEXP iLaplaceExamples_nlpost_rebin(SEXP uSEXP, SEXP thetaSEXP, SEXP ySEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type u(uSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    __result = Rcpp::wrap(nlpost_rebin(u, theta, y, n));
+    return __result;
+END_RCPP
+}
+// grU_rebin
+arma::vec grU_rebin(arma::vec u, arma::vec theta, arma::vec y, int n);
+RcppExport SEXP iLaplaceExamples_grU_rebin(SEXP uSEXP, SEXP thetaSEXP, SEXP ySEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type u(uSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    __result = Rcpp::wrap(grU_rebin(u, theta, y, n));
+    return __result;
+END_RCPP
+}
+// hessU_rebin
+arma::mat hessU_rebin(arma::vec u, arma::vec theta, arma::vec y, int n);
+RcppExport SEXP iLaplaceExamples_hessU_rebin(SEXP uSEXP, SEXP thetaSEXP, SEXP ySEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::vec >::type u(uSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    __result = Rcpp::wrap(hessU_rebin(u, theta, y, n));
+    return __result;
+END_RCPP
+}

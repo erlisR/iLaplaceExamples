@@ -28,7 +28,8 @@ double, the logarithm of the marginal likelihood
 The function computes the marginal likelihood by importance sampling and from user-written functions.
 }
 \examples{
-##'
+\dontrun{
+}
 }
 \references{
 Chib S. & Jeliazikov I. (2001).
@@ -40,7 +41,6 @@ Robert C. P. & Casella G. (2004).
  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 }
 \seealso{
-\code{\link[iLaplaceExamples]{MHmcmc}},
-\code{\link[iLaplaceExamples]{ChibML}}
+\code{\link[iLaplaceExamples]{nlpost_gomp}}, \code{\link[iLaplaceExamples]{nlpost_bod2}} for examples; \code{\link[iLaplaceExamples]{MHmcmc}}, \code{\link[iLaplaceExamples]{ChibML}}
 }
 

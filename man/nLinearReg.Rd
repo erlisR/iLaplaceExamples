@@ -108,6 +108,7 @@ The prior for \code{beta} is the multivariate Studnet's \eqn{t}{t} with the appr
 
 library(iLaplace)
 
+## regression models with BOD2 data
 # set the data
 data(BOD2)
 y = BOD2$demand
@@ -118,6 +119,8 @@ SigBeta = matrix(0, 2,2)
 diag(SigBeta) = 10
 sigScale = 10
 dfprop = 3
+
+## Model with normal errors
 
 # the objective function and derivatives
 ff = function(pp, ...) nlpost_bod2(beta = pp[1:2], lsig = pp[3], ...)
@@ -155,7 +158,7 @@ logM.iLap <- iLaplace(fullOpt = opt.post, ff = ff, ff.gr = ff.gr, ff.hess = ff.h
                       muBeta = muBeta, SigBeta = SigBeta,
                       sigScale = sigScale)
 
-logM.Lap <- 3*log(2*pi)/2 - opt.post$objective - 0.5*determinant(opt.post$par)$mod
+logM.Lap <- 3*log(2*pi)/2 - opt.post$objective - 0.5*determinant(opt.post$hessian)$mod
 # marginal likelihood by importance samling
 logM.IS <- isML(logfun = function(x) -ff(x, y = y, Time = Time, n =  n,
                                          muBeta = muBeta, SigBeta = SigBeta,
@@ -167,6 +170,54 @@ logM.Lap
 logM.IS
 logM.Chib
 
+## Model with Student's t errors
+
+# the objective function and derivatives
+tff = function(pp, ...) nlpostT_bod2(beta = pp[1:2], lsig = pp[3], lnu = pp[4], ...)
+tff.gr = function(pp, ...) gradT_bod2(beta = pp[1:2], lsig = pp[3], lnu = pp[4], ...)
+tff.hess = function(pp, ...) hessT_bod2(beta = pp[1:2], lsig = pp[3], lnu = pp[4], ...)
+
+# find the mode
+init <- c(2, 5, 0.5, 0)
+opt.postt = nlminb(init, obj = tff, gradient = tff.gr, hessian = tff.hess,
+                  y = y, Time = Time, n =  n, muBeta = muBeta,
+                  SigBeta = SigBeta, sigScale = sigScale, control = list(trace = 1))
+opt.postt$hessian = tff.hess(opt.postt$par, y = y, Time = Time, n =  n, muBeta = muBeta,
+                           SigBeta = SigBeta, sigScale = sigScale)
+
+# simulate from the posterior
+mcmc.postt = MHmcmc(logfun = function(x) -tff(x, y = y, Time = Time, n =  n, muBeta = muBeta,
+                                            SigBeta = SigBeta, sigScale = sigScale),
+                   burnin = 20000, mcmc = 1e+6,
+                   thin = 5, tune = 1.2, V = solve(opt.postt$hessian),
+                   df = dfprop, theta.init = opt.postt$par, verbose = 50000)
+
+logM.Lapt <- 4*log(2*pi)/2 - opt.postt$objective - 0.5*determinant(opt.postt$hessian)$mod
+
+# marginal likelihood by Chib's method
+logM.Chibt <- ChibML(logfun = function(x) -tff(x, y = y, Time = Time, n =  n,
+                                            muBeta = muBeta, SigBeta = SigBeta,
+                                            sigScale = sigScale),
+                   theta.star = opt.postt$par,
+                   tune = 1.5, V = solve(opt.postt$hessian), t(mcmc.postt),
+                   df = dfprop, verbose = 100000)
+
+logM.iLapt <- iLaplace(fullOpt = opt.postt, ff = tff, ff.gr = tff.gr, ff.hess = tff.hess,
+                      control = list(sp.points = 100, delta = 9, n.cores = 4),
+                      clEvalQ = c("iLaplaceExamples"), y = y, Time = Time, n =  n,
+                      muBeta = muBeta, SigBeta = SigBeta,
+                      sigScale = sigScale)
+
+logM.ISt <- isML(logfun = function(x) -tff(x, y = y, Time = Time, n =  n,
+                                         muBeta = muBeta, SigBeta = SigBeta,
+                                         sigScale = sigScale), nsim = 1e+6,
+                theta.hat = opt.postt$par, tune = 1.5,
+                V = solve(opt.postt$hessian),df = dfprop, verbose = 10000)
+
+logM.iLapt
+logM.Lapt
+logM.ISt
+logM.Chibt
 }
 }
 \references{

@@ -32,6 +32,64 @@ These functions give the normalising constant of (skewed) multivariate Student's
 \details{
 These functions use the improved and the standard Laplace approximation for computing the normalising constant of the multivariate t/skew-t density. The functions are similar to \code{\link[iLaplace]{iLaplace}}.
 }
+\examples{
+\dontrun{
+
+library(iLaplaceExamples)
+
+# improved (black) and standard(red) Laplace approximations for the multivariate t
+dims = seq(3,100, by = 5)
+lap3 = sapply(dims, function(i) iLap_mvt(i, 3))
+lap5 = sapply(dims, function(i) iLap_mvt(i, 5))
+lap10 = sapply(dims, function(i) iLap_mvt(i, 10))
+lap20 = sapply(dims, function(i) iLap_mvt(i, 20))
+
+# improved (black) and standard (red) Laplace approximations for the multivariate t/skewt
+# a=4, c=1
+lap3s2 = sapply(dims, function(i) iLap_mvskt(a=4, c=1, i, df=3))
+lap5s2 = sapply(dims, function(i) iLap_mvskt(a=4, c=1, i, df=5))
+lap10s2 = sapply(dims, function(i) iLap_mvskt(a=4, c=1, i, df=10))
+lap20s2 = sapply(dims, function(i) iLap_mvskt(a=4, c=1, i, df=20))
+
+postscript("fig1.eps", width=5, height=5)
+# red = standard Laplace
+# black = improved Laplace
+par(par(mai=c(0.85,0.85,0.2,0.03)))
+plot(dims, lap3[1,], pch=1, cex=1.2, ylim=c(-55, 0), xlab=NA, main=NA, ylab=NA)
+points(dims, lap5[1,], pch=2, cex=1.2, col=1)
+points(dims, lap10[1,], pch=3, cex=1.2, col=1)
+points(dims, lap20[1,], pch=4, cex=1.2, col=1)
+points(dims, lap3[2,], pch=1, cex=1.2, col=2, lwd = 2)
+points(dims, lap5[2,], pch=2, cex=1.2, col=2,lwd = 2)
+points(dims, lap10[2,], pch=3, cex=1.2, col=2,lwd = 2)
+points(dims, lap20[2,], pch=4, cex=1.2, col=2,lwd = 2)
+mtext(text="dimension", side=1,line=2.2, cex = 1.3)
+mtext(text="log normalising constant", side=2,line=2.5, cex = 1.3)
+mtext(text="a=c=3/2", side=3,line=0.4, cex = 1.3)
+# points(dims, lap3[2,], pch="°", cex=1.3)
+abline(h=0, lwd = 2)
+dev.off()
+
+postscript("fig2.eps", width=5, height=5)
+# red = standard Laplace
+# black = improved Laplace
+# par(par(mai=c(0.85,0.85,0.2,0.03)))
+plot(dims, lap3s2[1,], pch=1, cex=1.2, ylim=c(-50, 0), xlab=NA, main=NA, ylab=NA)
+points(dims, lap5s2[1,], pch=2, cex=1.2, col=1)
+points(dims, lap10s2[1,], pch=3, cex=1.2, col=1)
+points(dims, lap20s2[1,], pch=4, cex=1.2, col=1)
+points(dims, lap3s2[2,], pch=1, cex=1.2, col=2, lwd = 2)
+points(dims, lap5s2[2,], pch=2, cex=1.2, col=2,lwd = 2)
+points(dims, lap10s2[2,], pch=3, cex=1.2, col=2,lwd = 2)
+points(dims, lap20s2[2,], pch=4, cex=1.2, col=2,lwd = 2)
+mtext(text="dimension", side=1,line=2.2)
+mtext(text="log normalising contant", side=2.5,line=1.7)
+mtext(text="a=4, c=1", side=3,line=0.4)
+# points(dims, lap3[2,], pch="°", cex=1.3)
+abline(h=0, lwd = 2)
+dev.off()
+}
+}
 \references{
 Ruli E., Sartori N. & Ventura L. (2015)
 Improved Laplace approximation for marignal likelihoods.

@@ -13,51 +13,6 @@
 ##'
 ##' @return double, the logarithm of the posterior normalising constant
 ##'
-##' @examples
-##'\dontrun{
-##'
-##' # fix the data
-##' data(BOD2)
-##' y <- BOD2$demand
-##' x <- BOD2$Time
-##' n <- length(y)
-##' muBeta <- rep(0, 2)
-##' SigBeta <- matrix(0, 2,2)
-##' diag(SigBeta) <- 10
-##' sigScale <- 10
-##' dfprop <- 3
-##'
-##' ff <- function(pp) nlpost_bod2(beta = pp[1:2], lsig = pp[3],
-##'                               y = y, x = x, n =  n, muBeta = muBeta,
-##'                               SigBeta = SigBeta, sigScale = sigScale)
-##' ff.gr <- function(pp) grad_bod2(beta = pp[1:2], lsig = pp[3],
-##'                               y = y, x = x, n =  n, muBeta = muBeta,
-##'                               SigBeta = SigBeta, sigScale = sigScale)
-##' ff.hess <- function(pp) hess_bod2(beta = pp[1:2], lsig = pp[3],
-##'                                   y = y, x = x, n =  n, muBeta = muBeta,
-##'                                   SigBeta = SigBeta, sigScale = sigScale)
-##'
-##'  # find the posterior's maximum
-##' init <- c(5, 2, 0.5)
-##' opt.post <- nlminb(init, obj=ff, gradient = ff.gr,
-##'                   hessian = ff.hess, control = list(trace = 1))
-##'
-##' opt.post$hessian <- ff.hess(opt.post$par)
-##'
-##' # take an MCMC posterior sample
-##' mcmc.post <- MHmcmc(logfun = function(x) -ff(x), burnin = 20000,
-##'                     mcmc = 1e+7, thin = 10, tune = 1.2,
-##'                     V = solve(opt.post$hessian), df = dfprop,
-##'                     theta.init = init, verbose=50000)
-##'
-##' # compute the marginal likelihoo
-##' mlikChib <-  ChibML(logfun = function(x) -ff(x),
-##'                     theta.star = opt.post$par,
-##'                     tune = 1.2, V = solve(opt.post$hessian),
-##'                     t(mcmc.post), df = dfprop, verbose = 1000)
-##'
-##'}
-##'
 ##' @references
 ##' Chib S. & Jeliazikov I. (2001).
 ##' Marginal likelihood from the Metropolis-Hastings output.
@@ -67,7 +22,7 @@
 ##' Robert C. P. & Casella G. (2004).
 ##'  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 ##'
-##' @seealso \code{\link[iLaplaceExamples]{MHmcmc}}, \code{\link[iLaplaceExamples]{isML}}
+##' @seealso \code{\link[iLaplaceExamples]{nlpost_gomp}} and \code{\link[iLaplaceExamples]{nlpost_bod2}} for examples; \code{\link[iLaplaceExamples]{MHmcmc}}, \code{\link[iLaplaceExamples]{isML}}
 ##'
 ##' @rdname ChibML
 ##' @export
@@ -119,57 +74,10 @@ ChibML <- function(logfun, theta.star, tune, V, mcmcsamp, df, verbose){
 ##' @return double, the logarithm of the marginal likelihood
 ##'
 ##' @examples
-##'
-##' ##' @examples
+##' 
 ##'\dontrun{
-##'
-##' # fix the data
-##' data(BOD2)
-##' y <- BOD2$demand
-##' x <- BOD2$Time
-##' n <- length(y)
-##' muBeta <- rep(0, 2)
-##' SigBeta <- matrix(0, 2,2)
-##' diag(SigBeta) <- 10
-##' sigScale <- 10
-##' dfprop <- 3
-##'
-##' ff <- function(pp) nlpost_bod2(beta = pp[1:2], lsig = pp[3],
-##'                               y = y, x = x, n =  n, muBeta = muBeta,
-##'                               SigBeta = SigBeta, sigScale = sigScale)
-##' ff.gr <- function(pp) grad_bod2(beta = pp[1:2], lsig = pp[3],
-##'                               y = y, x = x, n =  n, muBeta = muBeta,
-##'                               SigBeta = SigBeta, sigScale = sigScale)
-##' ff.hess <- function(pp) hess_bod2(beta = pp[1:2], lsig = pp[3],
-##'                                   y = y, x = x, n =  n, muBeta = muBeta,
-##'                                   SigBeta = SigBeta, sigScale = sigScale)
-##'
-##'  # find the posterior's maximum
-##' init <- c(5, 2, 0.5)
-##' opt.post <- nlminb(init, obj=ff, gradient = ff.gr,
-##'                   hessian = ff.hess, control = list(trace = 1))
-##'
-##' opt.post$hessian <- ff.hess(opt.post$par)
-##'
-##' # take an MCMC posterior sample
-##' mcmc.post <- MHmcmc(logfun = function(x) -ff(x), burnin = 20000,
-##'                     mcmc = 1e+7, thin = 10, tune = 1.2,
-##'                     V = solve(opt.post$hessian), df = dfprop,
-##'                     theta.init = init, verbose=50000)
-##'
-##' # compute the marginal likelihoo
-##' mlikChib <-  ChibML(logfun = function(x) -ff(x),
-##'                     theta.star = opt.post$par,
-##'                     tune = 1.2, V = solve(opt.post$hessian),
-##'                     t(mcmc.post), df = dfprop, verbose = 1000)
-##'
-##' logM.IS <- isML(logfun = function(x) -ff(x), nsim = 1e+6,
-##'                 theta.hat = opt.post$par, tune = 1.5,
-##'                 V = solve(opt.post$hessian), df = dfprop,
-##'                 verbose = 1000)
-##' logM.IS; mlikChib
-##'
 ##'}
+##'
 ##'
 ##' @references
 ##' Chib S. & Jeliazikov I. (2001).
@@ -180,8 +88,7 @@ ChibML <- function(logfun, theta.star, tune, V, mcmcsamp, df, verbose){
 ##' Robert C. P. & Casella G. (2004).
 ##'  \emph{Monte Carlo Statistical Methods}. 2nd Edition. New York: Springer.
 ##'
-##' @seealso \code{\link[iLaplaceExamples]{MHmcmc}},
-##' \code{\link[iLaplaceExamples]{ChibML}}
+##' @seealso \code{\link[iLaplaceExamples]{nlpost_gomp}}, \code{\link[iLaplaceExamples]{nlpost_bod2}} for examples; \code{\link[iLaplaceExamples]{MHmcmc}}, \code{\link[iLaplaceExamples]{ChibML}}
 ##'
 ##' @rdname isML
 ##' @export

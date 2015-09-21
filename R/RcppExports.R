@@ -125,3 +125,15 @@ hessT_bod2 <- function(beta, lsig, lnu, y, x, n, muBeta, SigBeta, sigScale) {
     .Call('iLaplaceExamples_hessT_bod2', PACKAGE = 'iLaplaceExamples', beta, lsig, lnu, y, x, n, muBeta, SigBeta, sigScale)
 }
 
+nlpost_rebin <- function(u, theta, y, n) {
+    .Call('iLaplaceExamples_nlpost_rebin', PACKAGE = 'iLaplaceExamples', u, theta, y, n)
+}
+
+grU_rebin <- function(u, theta, y, n) {
+    .Call('iLaplaceExamples_grU_rebin', PACKAGE = 'iLaplaceExamples', u, theta, y, n)
+}
+
+hessU_rebin <- function(u, theta, y, n) {
+    .Call('iLaplaceExamples_hessU_rebin', PACKAGE = 'iLaplaceExamples', u, theta, y, n)
+}
+
